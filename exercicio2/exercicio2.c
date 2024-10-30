@@ -1,25 +1,31 @@
-/*****************************************************************
-**                        Exemplo 02                            **
-**                                                              **
-** Exemplo para utilizacao de buzzer do kit PIC 18 F452.        **
-** Ao carregar o programa no kit, o buzzer desse sera           **
-** acionado por um segundo e aguardara mais um segundo          **
-** ate o proximo acionamento.                                   **
-**                                                              **
-** Arquivo : buzzer .c                                          **
-** Compilador : MikroC PRO PIC v .6.4.0                         **
-**                                                              **
-** UFLA - Lavras /MG - 24/05/2017                               **
-*****************************************************************/
+/* ****************************************************************
+**                        Exercício 02                           **
+**                                                               **
+** Ao apertar e segurar o pushbutton RB0, é gerado dois números  **
+** aleatórios e são correspondentes a acender os  LED's PORTB e  **
+** LED's PORTD, quando esses valores são ambos iguais a 6,       **
+** o buzzer emite um sinal sonoro de meio segundo.               **
+**                                                               **
+** Aluno: Carlos Magno do Nascimento Junior                      **
+**                                                               **
+** Arquivo: exercicio2.c                                         **
+** Compilador : MikroC PRO PIC v7.2.0                            **
+**                                                               **
+** UFLA - Lavras /MG - 30/10/2024                                **
+******************************************************************/
 
+// Biblioteca para incluir a função rand()
 #include <stdlib.h>
 
-int ledB=6, ledD=6;
+// variáveis de controle do valor aleatório
+int ledB=1, ledD=1;
 
+// função para gerar valor aleatório
 int aleatorio(){
   return (rand()%6)+1;
 }
 
+// função para acender leds do grupo D, de acordo com o valor de entrada
 void acendeLedD(int n){
   if(n == 1){
     portd.rd1 = 1;
@@ -41,6 +47,7 @@ void acendeLedD(int n){
   }
 }
 
+// função para acender leds do grupo B, de acordo com o valor de entrada
 void acendeLedB(int n){
   if(n == 1){
     portb.rb1 = 1;
@@ -82,6 +89,7 @@ void main ()
   // Inicia com buzzer desligado.
   portc.rc1 = 1;
   
+  // Desliga todos os LEDs - 0b00000000 (bin) ou 0d0 (dec)
   portb = 0;
   portd = 0;
   
@@ -95,19 +103,28 @@ void main ()
        // Desliga todos os LEDs - 0b00000000 (bin) ou 0d0 (dec)
        portb = 0;
        portd = 0;
+       
+       // Verifica o valor gerado aletoriamente
+       // se ambos forem iguais a 6, emite o sinal sonoro e aciona os leds
        if ((ledB == 6) && (ledD == 6)){
          portc.rc1 = 0;
+         acendeLedB(ledB);
+         acendeLedD(ledD);
+         delay_ms(500);
          portc.rc1 = 1;
        }
-       acendeLedB(ledB);
-       acendeLedD(ledD);
-       delay_ms(1000);
+       // se não, apenas acende os leds correspondentes ao valor gerado
+       else {
+            acendeLedB(ledB);
+            acendeLedD(ledD);
+            delay_ms(500);
+       }
+       // gera novos valores aleatórios
        ledB = aleatorio();
        ledD = aleatorio();
     }
-    // Alterna estado do buzzer (ligado -> desligado -> ligado...)
-    //portc.rc1 = ~portc.rc1;
-    
+
+    // Desliga todos os LEDs - 0b00000000 (bin) ou 0d0 (dec) ao sair do laço
     portb = 0;
     portd = 0;
   }

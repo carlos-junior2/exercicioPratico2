@@ -1,5 +1,5 @@
-#line 1 "C:/Users/carlos.junior2/Desktop/exercicio2/exercicio2.c"
-#line 1 "c:/arquivos de programas/mikroelektronika/mikroc pro for pic/include/stdlib.h"
+#line 1 "C:/Users/junin/OneDrive/Área de Trabalho/UFLA/2024-2/Sistemas Embarcados/SistemasEmbarcados/exercicioPratico2/exercicio2/exercicio2.c"
+#line 1 "c:/users/public/documents/mikroelektronika/mikroc pro for pic/include/stdlib.h"
 
 
 
@@ -35,12 +35,14 @@ int min(int a, int b);
 void srand(unsigned x);
 int rand();
 int xtoi(char * s);
-#line 17 "C:/Users/carlos.junior2/Desktop/exercicio2/exercicio2.c"
-int ledB=6, ledD=6;
+#line 21 "C:/Users/junin/OneDrive/Área de Trabalho/UFLA/2024-2/Sistemas Embarcados/SistemasEmbarcados/exercicioPratico2/exercicio2/exercicio2.c"
+int ledB=1, ledD=1;
+
 
 int aleatorio(){
  return (rand()%6)+1;
 }
+
 
 void acendeLedD(int n){
  if(n == 1){
@@ -62,6 +64,7 @@ void acendeLedD(int n){
  portd.rd6 = 1;
  }
 }
+
 
 void acendeLedB(int n){
  if(n == 1){
@@ -104,6 +107,7 @@ void main ()
 
  portc.rc1 = 1;
 
+
  portb = 0;
  portd = 0;
 
@@ -117,17 +121,26 @@ void main ()
 
  portb = 0;
  portd = 0;
+
+
+
  if ((ledB == 6) && (ledD == 6)){
  portc.rc1 = 0;
- portc.rc1 = 1;
- }
  acendeLedB(ledB);
  acendeLedD(ledD);
- delay_ms(1000);
+ delay_ms(500);
+ portc.rc1 = 1;
+ }
+
+ else {
+ acendeLedB(ledB);
+ acendeLedD(ledD);
+ delay_ms(500);
+ }
+
  ledB = aleatorio();
  ledD = aleatorio();
  }
-
 
 
  portb = 0;
